@@ -6,9 +6,6 @@ from .utils import update_db_from_excel
 
 
 def import_from_excel(request):
-    if request.method == 'POST':
-        excel_file = request.FILES['excel_file']
-        update_db_from_excel(excel_file)
     context = {'department': Services.department_choices}
     return render(request, 'index.html', context)
 

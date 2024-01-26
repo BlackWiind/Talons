@@ -5,7 +5,7 @@
     <title>{{department}}</title>
 </head>
 <body>
-<div class="card mx-auto" style="width: 80rem;">
+<div class="card mx-auto" style="width: 100rem;">
     <div class="card-body">
         <h5 class="card-title mb-3">{{department}}</h5><b>
         <label for="last_name">Фамилия</label>
@@ -19,13 +19,16 @@
         <input type="date" id="date" value="{% now 'Y-m-d' %}">
         </b>
         <p></p>
-        <div id="some" class="d-flex flex-column ">
-            <select id="select">
-                <option selected disabled>------------</option>
-                {% for item in services %}
-                <option value="{{item.id}}">{{item.name}}.  {{item.type}}.  {{item.price}}р.</option>
-                {% endfor %}
-        </select>
+        <div id="block-content">
+            <div id="some" class="d-flex flex-row bd-highlight">
+                <select  class="p-2 flex-grow-1 bd-highlight col-8" id="select">
+                    <option selected disabled>------------</option>
+                    {% for item in services %}
+                    <option value="{{item.id}}">{{item.name}}.  {{item.type}}.  {{item.price}}р.</option>
+                    {% endfor %}
+                </select>
+                <input class="p-2 flex-shrink-1 bd-highlight" id="count" type="number" min="1" max="99" value="1">
+            </div>
         </div>
         <button id="add" class="btn btn-primary btn-sm" >Добавить услугу</button>
         <p></p><button type="button" class="btn btn-primary" class="print" id="print">
@@ -53,9 +56,9 @@
 <script>
     document.getElementById( 'add' ).addEventListener( 'click', function ( event ) {
     event.preventDefault();
-    var select = document.getElementById( 'select' ).cloneNode( true );
-    document.getElementById( 'some' ).appendChild(document.createElement("p"));
-    document.getElementById( 'some' ).appendChild( select );
+    var select = document.getElementById( 'some' ).cloneNode( true );
+    document.getElementById( 'block-content' ).appendChild(document.createElement("p"));
+    document.getElementById( 'block-content' ).appendChild( select );
 
 }, false );
 
@@ -65,20 +68,29 @@ $(document).on("click", "#print", function () {
     div.innerHTML += "<h3>Направление на платные услуги.</h3>"
     data ='ФИО: ' + document.getElementById( 'last_name' ).value + " " +
     document.getElementById( 'first_name' ).value + " " + document.getElementById( 'surname' ).value +
-    "<p></p>" + 'Дата рождения: ' + stringToDateString(document.getElementById( 'date' ).value)
+    "<br>" + 'Дата рождения: ' + stringToDateString(document.getElementById( 'date' ).value) + '<p></p>'
     div.innerHTML += data;
-    var elms = document.querySelectorAll("[id='select']");
+    var elms = document.querySelectorAll("[id='some']");
     sum = 0.0
     for(var i = 0; i < elms.length; i++) {
-        data = elms[i].options[elms[i].selectedIndex].text
-        sum += parseFloat(FloatFromString(data));
-        div.appendChild(document.createElement("p"));
+        element = elms[i].querySelector("#select")
+        data = element.options[element.selectedIndex].text;
+        element = Math.abs(elms[i].querySelector("#count").value);
+        sum += MultipleServices(data,element);
+        data += '<div style="float:right;">Количество: ' + element + '</div><br>'
         div.innerHTML += data;
         }
       div.innerHTML += "<p>Сумма: " + sum + 'р'
     PrintContent();
 });
-
+function MultipleServices(price, count){
+    try {
+        return parseFloat(FloatFromString(price)) * parseFloat(count);
+    }
+    catch{
+        return 0;
+    }
+}
 function FloatFromString(data){
     regex = /[+-]?([0-9]*[.])?[0-9]+р./
     x = data.toString().match(regex)[0].slice(0,-2)
