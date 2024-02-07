@@ -1,16 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
+{% block content %}
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
- <a href="{% url 'index' %}" class="btn btn-primary">На главную</a>
- <p></p>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="file" name="excel_file" accept=".xlsx">
-    <button type="submit">Загрузить</button>
-</form>
+<div class="card mx-auto" style="width: 30rem;">
+    <div class="card-body">
+        <a href="{% url 'index' %}" class="btn btn-primary float-start">На главную</a>
+        <a href="{% url 'admin:index' %}" class="btn btn-primary float-end">Администрирование</a>
+        <p></p>
+    </div>
+</div>
+<div class="card mx-auto" style="width: 30rem;">
+    <div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" class="float-start" name="excel_file" accept=".xlsx">
+            <button class="float-end" type="submit">Загрузить</button>
+        </form>
+    </div>
+</div>
 </body>
 </html>
+{% endblock content %}

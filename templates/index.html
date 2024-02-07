@@ -11,8 +11,8 @@
         <form method="get" action="/talon.html" enctype="multipart/form-data">
             <select name="department">
                 <option selected disabled>------------</option>
-                {% for value, item in department %}
-                <option value="{{value}}">{{item}}</option>
+                {% for value in department %}
+                <option value="{{value.id}}">{{value.name}}</option>
                 {% endfor %}
             </select>
             <p></p>

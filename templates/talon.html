@@ -7,16 +7,20 @@
 <body>
 <div class="card mx-auto" style="width: 100rem;">
     <div class="card-body">
-        <h5 class="card-title mb-3">{{department}}</h5><b>
-        <label for="last_name">Фамилия</label>
-        <input type="text" id="last_name">
-        <label for="first_name">Имя</label>
-        <input type="text" id="first_name">
-        <label for="surname">Отчество</label>
-        <input type="text" id="surname">
-        <p></p>
-        <label for="date">Дата рождения</label>
-        <input type="date" id="date" value="{% now 'Y-m-d' %}">
+        <h5 class="card-title mb-3">{{department}}</h5>
+        <b>
+            <label for="last_name">Фамилия</label>
+            <input type="text" id="last_name">
+            <label for="first_name">Имя</label>
+            <input type="text" id="first_name">
+            <label for="surname">Отчество</label>
+            <input type="text" id="surname">
+            <p></p>
+            <label for="date">Дата рождения</label>
+            <input type="date" id="date" value="{% now 'Y-m-d' %}">
+            <p></p>
+            <label for="docname">Врач: </label>
+            <input type="text" id="docname">
         </b>
         <p></p>
         <div id="block-content">
@@ -68,7 +72,8 @@ $(document).on("click", "#print", function () {
     div.innerHTML += "<h3>Направление на платные услуги.</h3>"
     data ='ФИО: ' + document.getElementById( 'last_name' ).value + " " +
     document.getElementById( 'first_name' ).value + " " + document.getElementById( 'surname' ).value +
-    "<br>" + 'Дата рождения: ' + stringToDateString(document.getElementById( 'date' ).value) + '<p></p>'
+    "<br>" + 'Дата рождения: ' + stringToDateString(document.getElementById( 'date' ).value) + '<p></p>' +
+    'Врач: ' + document.getElementById( 'docname' ).value + '<p></p>'
     div.innerHTML += data;
     var elms = document.querySelectorAll("[id='some']");
     sum = 0.0
@@ -80,7 +85,7 @@ $(document).on("click", "#print", function () {
         data += '<div style="float:right;">Количество: ' + element + '</div><br>'
         div.innerHTML += data;
         }
-      div.innerHTML += "<p>Сумма: " + sum + 'р'
+      div.innerHTML += "<p>Сумма: " + sum + 'р.'
     PrintContent();
 });
 function MultipleServices(price, count){

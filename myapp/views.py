@@ -1,20 +1,20 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect
-from openpyxl import load_workbook
 
-from .models import Services
+from .models import Services, Department
 from .utils import update_db_from_excel
 
 
 def import_from_excel(request):
-    context = {'department': Services.department_choices}
+    context = {'department': Department.objects.exclude(name='Общие').order_by('name')}
     return render(request, 'index.html', context)
 
 
 def talon(request):
     if request.method == "GET":
         try:
-            services = Services.objects.filter(department=request.GET.get('department'))
-            dep = services[0].get_department_display()
+            services = Services.objects.filter(Q(department=request.GET.get('department')) | Q(department__name='Общие'))
+            dep = services[0].department
         except:
             return redirect('error.html')
         context = {'services': services, 'department': dep}

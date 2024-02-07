@@ -1,37 +1,32 @@
 from django.db import models
 
 
-class Services(models.Model):
-    department_choices = (
-        ('11', 'ЭНДОСКОПИЧЕСКИЕ  ИССЛЕДОВАНИЯ - СТАЦИОНАР'),
-        ('12', 'ОФУД'),
-        ('14', 'ОЛД'),
-        ('16', "КТТ"),
-        ('17', 'ЛКИ'),
-        ('21', 'ФТО'),
-        ('32', 'Колопроктологическое отделение'),
-        ('33', 'ОРХМДЛ '),
-        ('34', 'Челюстно-лицевая хирургия'),
-        ('35', 'Торакальная хирургия'),
-        ('36', 'Урология'),
-        ('37', 'Травматология'),
-        ('38', 'Хирургия общая'),
-        ('39', 'Сосудистая хирургия'),
-        ('40', 'Гинекология'),
-        ('41', 'Отделение нарушений ритма сердца'),
-        ('42', 'ЛОР отделение'),
-        ('43', 'Гастроэнтерология'),
-        ('44', 'Кардиология'),
-        ('45', 'Эндокринология'),
-        ('46', 'Неврология'),
-        ('47', 'Пульмонология'),
-        ('48', 'Ревматология'),
-        ('49', 'Гематология'),
-        ('50', 'ОХГД нефрология'),
-        ('51', 'РАО'),
-    )
+class Department(models.Model):
+    name = models.CharField(max_length=200, verbose_name='Название отделения')
 
-    name = models.CharField(max_length=200)
-    type = models.CharField(max_length=50)
-    price = models.CharField(max_length=50)
-    department = models.CharField(choices=department_choices, max_length=2)
+    class Meta:
+        verbose_name = "Отделение"
+        verbose_name_plural = "Отделения"
+
+    def __str__(self):
+        return self.name
+
+
+class IdDepartments(models.Model):
+    id_value = models.IntegerField(verbose_name='Номер отделения')
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, verbose_name='Отделение')
+
+    class Meta:
+        verbose_name = "Номер отделения"
+        verbose_name_plural = "Номера отделений"
+
+
+class Services(models.Model):
+    name = models.CharField(max_length=200, verbose_name='Название услуги')
+    type = models.CharField(max_length=50, verbose_name='Тип')
+    price = models.CharField(max_length=50, verbose_name='Цена')
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, verbose_name='Отделение')
+
+    class Meta:
+        verbose_name = "Услуги"
+        verbose_name_plural = "Услуги"
